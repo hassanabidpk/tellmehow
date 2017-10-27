@@ -3,7 +3,7 @@
 ### Prerequisites
 
 - Install Python 3.5 [download][https://www.python.org/downloads/]
-- Install git download
+- Install git
 - Install a code editor (Sublime Text, Atom or any of your choice)
 
 ## Setup TellMeHow development environment
