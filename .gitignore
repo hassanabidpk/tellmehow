@@ -1,0 +1,7 @@
+__pycache__
+*.pyc
+db.sqlite3
+hackvenv
+uploads/*
+staticfiles
+.DS_STORE
