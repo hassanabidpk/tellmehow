@@ -25,7 +25,7 @@ SECRET_KEY = 'dummy_key'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [128.199.69.81]
 
 
 # Application definition

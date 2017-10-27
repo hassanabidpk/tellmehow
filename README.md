@@ -34,7 +34,7 @@ Run following command
 Start server
 
 ```
-(hackvenv) > python manage runserver
+(hackvenv) > python manage.py runserver
 ```
 
 visit localhost:8000 or http://127.0.0.1:8000
