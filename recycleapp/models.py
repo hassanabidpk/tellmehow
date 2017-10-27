@@ -5,6 +5,7 @@ import datetime
 from django.utils import timezone
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
+from django.template.defaultfilters import slugify
 
 class Country(models.Model):
     name = models.CharField(max_length=250)
@@ -50,7 +51,10 @@ class Component(models.Model):
                             blank=True,
                             null=True,)
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
-    main_component = models.ForeignKey('self', on_delete=models.CASCADE)
+    main_component = models.ForeignKey('self', 
+                            models.SET_NULL,
+                            blank=True,
+                            null=True,)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
@@ -62,11 +66,10 @@ class Product(models.Model):
     name = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, allow_unicode=True)
     search_keywords = models.CharField(max_length=250)
-    catetory = models.ForeignKey(Category, on_delete=models.CASCADE)
     main_component = models.ForeignKey(Component, on_delete=models.CASCADE)
     writer = models.ForeignKey(User)
     photo = models.ImageField(upload_to="product_images/", null=True, blank=True)
-    photo_thumbnail = ImageSpecField(source='image',
+    photo_thumbnail = ImageSpecField(source='photo',
                                        processors=[ResizeToFill(360, 225)],
                                        format='JPEG',
                                        options={'quality': 90})

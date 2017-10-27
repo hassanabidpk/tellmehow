@@ -6,3 +6,4 @@ hackvenv
 uploads/*
 staticfiles
 .DS_STORE
+product_images
