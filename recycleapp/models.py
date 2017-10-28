@@ -95,7 +95,7 @@ class RecyclingInfomation(models.Model):
         verbose_name_plural = "Recycle Infos"
 
     def __str__(self):
-        return "info"
+        return self.country.name + ' - ' + self.component.name
 
 
 class Favorite(models.Model):
