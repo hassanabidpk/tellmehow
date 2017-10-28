@@ -1,6 +1,8 @@
 from django.conf.urls import url
 from django.views.generic import TemplateView
 from rest_framework.urlpatterns import format_suffix_patterns
+from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
+from django.conf import settings
 from . import views
 
 urlpatterns = [
@@ -13,5 +15,5 @@ urlpatterns = [
     url(r'^api/v1/category/material/(?P<pk>[0-9]+)/$', views.MaterialList.as_view()),
     
 ]
-
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns = format_suffix_patterns(urlpatterns)
