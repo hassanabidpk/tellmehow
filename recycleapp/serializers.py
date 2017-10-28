@@ -4,6 +4,12 @@ from .models import MainRecyclingInfomation, MinorRecyclingInfomation
 from django.contrib.auth.models import User
 import json
 
+
+class CategorySerialier(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Category
+
 class MinorComponentSerializer(serializers.ModelSerializer):
     category = serializers.StringRelatedField()
     material = serializers.StringRelatedField()
@@ -23,11 +29,11 @@ class MainComponentSerializer(serializers.ModelSerializer):
     category = serializers.StringRelatedField()
     material = serializers.StringRelatedField()
     recyclinginfomation = serializers.SerializerMethodField()
+    related_components = MinorComponentSerializer(read_only=True, many=True)
 
     def get_recyclinginfomation(self, obj):
         r_info = MainRecyclingInfomation.objects.filter(component__pk=obj.pk)
         if r_info:
-            
             return r_info[0].info
         else :
             return None
@@ -35,7 +41,7 @@ class MainComponentSerializer(serializers.ModelSerializer):
     class Meta:
         model =  MainComponent
         fields = ('id', 'name', 'category', 'material', 
-                    'recyclinginfomation')
+                    'recyclinginfomation', 'related_components')
 
 class ProductSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')

@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
-from .serializers import ProductSerializer, MainComponentSerializer, MinorComponentSerializer
+from .serializers import ProductSerializer, MainComponentSerializer, MinorComponentSerializer, CategorySerialier
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
@@ -41,6 +41,19 @@ class ProductList(APIView):
     #         print("place serailizer not valid")
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ProductDetail(APIView):
+    
+    def get_object(self, pk):
+        try:
+            return Product.objects.get(pk=pk)
+        except Product.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        product = self.get_object(pk)
+        serializer = ProductSerializer(component)
+        return Response(serializer.data)
+
 class ComponentList(APIView):
     """
     List all components
@@ -49,4 +62,27 @@ class ComponentList(APIView):
     def get(self, request, format=None):
         components = MainComponent.objects.all()
         serializer = MainComponentSerializer(components, many=True)
+        return Response(serializer.data)
+
+class CategoryList(APIView):
+    """
+    List all categories
+    """
+
+    def get(self, request, format=None):
+        categories = Category.objects.all()
+        serializer = CategorySerialier(categories, many=True)
+        return Response(serializer.data)
+
+class ComponentDetail(APIView):
+    
+    def get_object(self, pk):
+        try:
+            return MainComponent.objects.get(pk=pk)
+        except MainComponent.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        component = self.get_object(pk)
+        serializer = MainComponentSerializer(component)
         return Response(serializer.data)
