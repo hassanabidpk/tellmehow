@@ -102,6 +102,24 @@ class MaterialList(APIView):
             materials.append(component.material)
         serializer = MainComponentSerializer(components, many=True)
         serializer_mat = MaterialSerialier(materials, many=True)
-        # response_data["components"] = serializer.data
+        response_data["components"] = serializer.data
         response_data["materials"] = serializer_mat.data
+        return HttpResponse(JsonResponse(response_data), content_type="application/json")
+
+class ComponentDetailFromMaterial(APIView):
+
+    def get(self, request, pk):
+        material = Material.objects.get(pk=pk)
+        component_query = MainComponent.objects.filter(material=material)
+        print("type : {}".format(type(component_query)))
+        response_data = {}
+        components = []
+        if component_query:
+            for comp in component_query:
+                print("type comp : {}".format(type(comp)))
+                components.append(comp)
+            serializer = MainComponentSerializer(components, many=True)
+            response_data["components"] = serializer.data
+        else :
+            response_data["components"] = None
         return HttpResponse(JsonResponse(response_data), content_type="application/json")

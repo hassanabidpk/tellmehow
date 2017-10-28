@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^api/v1/component/(?P<pk>[0-9]+)/$', views.ComponentDetail.as_view()),
     url(r'^api/v1/category/list/$', views.CategoryList.as_view()),
     url(r'^api/v1/category/material/(?P<pk>[0-9]+)/$', views.MaterialList.as_view()),
+    url(r'^api/v1/category/component/(?P<pk>[0-9]+)/$', views.ComponentDetailFromMaterial.as_view()),
     
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

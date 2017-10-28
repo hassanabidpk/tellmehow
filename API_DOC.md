@@ -5,6 +5,7 @@
 
 - Get list of all categories: `/api/v1/category/list`
 - Get list of all material with specific category `api/v1/category/material/:category_id/`
+- Get list of components with specific material `api/v1/category/component/:material_id`
 - Get list of main components `api/v1/component/list/`
 - Get list of single main component with minor components `api/v1/component/:component_id/`
 - Get list of all products `api/v1/product/list`
@@ -47,7 +48,25 @@
 
 ```
 
-3. List of Main components
+3. List of Main components for a Material
+
+```json
+{
+    "components": [
+        {
+            "id": 11,
+            "name": "Household - Ceramics",
+            "category": "Household",
+            "material": "Ceramics",
+            "recyclinginfomation": "Recycling info:\r\n\tCeramics are generally not recyclable. However there might be local organisations or industries that accept pottery or ceramic construction materials like used tiles.",
+            "minor_components": []
+        }
+    ]
+}
+
+```
+
+4. List of Main components
 
 
 ```json
@@ -93,7 +112,7 @@
 
 ```
 
-4. Main component detail with minor components
+5. Main component detail with minor components
 
 ```json
 {
@@ -121,7 +140,7 @@
 ```
 
 
-5. List of all the products
+6. List of all the products
 
 ```json
 
@@ -145,7 +164,7 @@
 ]
 ```
 
-6. Product Detail 
+7. Product Detail 
 
 ```json
 {
