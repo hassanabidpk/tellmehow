@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from .models import Country, Category, Material, MainComponent, MinorComponent, Product, Favorite
 from .models import MainRecyclingInfomation, MinorRecyclingInfomation
 from django.views.decorators.csrf import csrf_exempt
@@ -6,9 +7,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from .serializers import ProductSerializer, MainComponentSerializer, MinorComponentSerializer, CategorySerialier
+from .serializers import MaterialSerialier
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
+import json
+from django.core import serializers
 
 def index(request):
     components = MainComponent.objects.all()
@@ -51,7 +55,7 @@ class ProductDetail(APIView):
 
     def get(self, request, pk, format=None):
         product = self.get_object(pk)
-        serializer = ProductSerializer(component)
+        serializer = ProductSerializer(product)
         return Response(serializer.data)
 
 class ComponentList(APIView):
@@ -86,3 +90,18 @@ class ComponentDetail(APIView):
         component = self.get_object(pk)
         serializer = MainComponentSerializer(component)
         return Response(serializer.data)
+
+class MaterialList(APIView):
+
+    def get(self, request, pk):
+        category = Category.objects.get(pk=pk)
+        components = MainComponent.objects.filter(category=category)
+        response_data = {}
+        materials = []
+        for component in components:
+            materials.append(component.material)
+        serializer = MainComponentSerializer(components, many=True)
+        serializer_mat = MaterialSerialier(materials, many=True)
+        # response_data["components"] = serializer.data
+        response_data["materials"] = serializer_mat.data
+        return HttpResponse(JsonResponse(response_data), content_type="application/json")
