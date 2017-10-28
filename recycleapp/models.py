@@ -102,7 +102,7 @@ class MainRecyclingInfomation(models.Model):
         verbose_name_plural = "Main Recycle Infos"
 
     def __str__(self):
-        return self.country + ' - ' + self.component.name
+        return self.country.name + ' - ' + self.component.name
 
 class MinorRecyclingInfomation(models.Model):
     info = models.TextField()
