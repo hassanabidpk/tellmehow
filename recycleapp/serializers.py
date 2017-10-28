@@ -59,4 +59,10 @@ class CategorySerialier(serializers.ModelSerializer):
     
     class Meta:
         model = Category
-        fields = ('id', 'name', '')
+        fields = ('id', 'name',)
+
+class MaterialSerialier(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Material
+        fields = ('id', 'name',)
