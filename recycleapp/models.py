@@ -6,6 +6,7 @@ from django.utils import timezone
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from django.template.defaultfilters import slugify
+import json
 
 class Country(models.Model):
     name = models.CharField(max_length=250)
@@ -42,30 +43,40 @@ class Material(models.Model):
     def __str__(self):
         return self.name
 
-class Component(models.Model):
+class MinorComponent(models.Model):
     name = models.CharField(max_length=250)
-    type = models.CharField(max_length=100)
     category = models.ForeignKey(Category,
                             models.SET_NULL,
                             blank=True,
                             null=True,)
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
-    main_component = models.ForeignKey('self',
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+        
+class MainComponent(models.Model):
+    name = models.CharField(max_length=250)
+    category = models.ForeignKey(Category,
                             models.SET_NULL,
                             blank=True,
                             null=True,)
+    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    minor_components = models.ManyToManyField(MinorComponent, null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
 
+
 class Product(models.Model):
     code = models.CharField(max_length=100)
     name = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, allow_unicode=True)
     search_keywords = models.CharField(max_length=250)
-    main_component = models.ForeignKey(Component, on_delete=models.CASCADE)
+    main_component = models.ForeignKey(MainComponent, on_delete=models.CASCADE)
     writer = models.ForeignKey(User)
     photo = models.ImageField(upload_to="product_images/", null=True, blank=True)
     photo_thumbnail = ImageSpecField(source='photo',
@@ -84,15 +95,28 @@ class Product(models.Model):
         return self.name
 
 
-class RecyclingInfomation(models.Model):
+class MainRecyclingInfomation(models.Model):
     info = models.TextField()
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    component = models.ForeignKey(Component, on_delete=models.CASCADE)
+    component = models.ForeignKey(MainComponent, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name_plural = "Recycle Infos"
+        verbose_name_plural = "Main Recycle Infos"
+
+    def __str__(self):
+        return "info"
+
+class MinorRecyclingInfomation(models.Model):
+    info = models.TextField()
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    component = models.ForeignKey(MinorComponent, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Minor Recycle Infos"
 
     def __str__(self):
         return "info"
@@ -100,7 +124,7 @@ class RecyclingInfomation(models.Model):
 
 class Favorite(models.Model):
     user = models.ForeignKey(User)
-    recycling_info = models.ForeignKey(RecyclingInfomation, on_delete=models.CASCADE)
+    recycling_info = models.ForeignKey(MainRecyclingInfomation, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
