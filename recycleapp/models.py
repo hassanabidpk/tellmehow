@@ -51,7 +51,7 @@ class MinorComponent(models.Model):
 
     def __str__(self):
         return self.name
-        
+
 class MainComponent(models.Model):
     name = models.CharField(max_length=250)
     category = models.ForeignKey(Category,
@@ -102,7 +102,7 @@ class MainRecyclingInfomation(models.Model):
         verbose_name_plural = "Main Recycle Infos"
 
     def __str__(self):
-        return "info"
+        return self.country.name + ' - ' + self.component.name
 
 class MinorRecyclingInfomation(models.Model):
     info = models.TextField()
