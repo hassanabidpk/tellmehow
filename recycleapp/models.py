@@ -72,7 +72,7 @@ class MainComponent(models.Model):
 
 
 class Product(models.Model):
-    code = models.CharField(max_length=100)
+    code = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, allow_unicode=True)
     search_keywords = models.CharField(max_length=250)
@@ -119,7 +119,7 @@ class MinorRecyclingInfomation(models.Model):
         verbose_name_plural = "Minor Recycle Infos"
 
     def __str__(self):
-        return "info"
+        return self.country.name + ' - ' + self.component.name
 
 
 class Favorite(models.Model):
