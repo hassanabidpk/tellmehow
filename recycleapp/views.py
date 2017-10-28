@@ -58,6 +58,19 @@ class ProductDetail(APIView):
         serializer = ProductSerializer(product)
         return Response(serializer.data)
 
+class ProductDetailFromCode(APIView):
+    
+    def get_object(self, code):
+        try:
+            return Product.objects.get(code=code)
+        except Product.DoesNotExist:
+            raise Http404
+
+    def get(self, request, code, format=None):
+        product = self.get_object(code)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
+
 class ComponentList(APIView):
     """
     List all components
@@ -110,16 +123,23 @@ class ComponentDetailFromMaterial(APIView):
 
     def get(self, request, pk):
         material = Material.objects.get(pk=pk)
+        category_id = request.GET['category']
+        if category_id:
+            category = Category.objects.get(pk=category_id)
         component_query = MainComponent.objects.filter(material=material)
         print("type : {}".format(type(component_query)))
         response_data = {}
         components = []
+        result_component = None
         if component_query:
             for comp in component_query:
                 print("type comp : {}".format(type(comp)))
+                if comp.category.pk == category.pk:
+                    result_component = comp
                 components.append(comp)
-            serializer = MainComponentSerializer(components, many=True)
-            response_data["components"] = serializer.data
+            serializer = MainComponentSerializer(result_component)
+            response_data["component"] = serializer.data
         else :
-            response_data["components"] = None
+            response_data["component"] = None
         return HttpResponse(JsonResponse(response_data), content_type="application/json")
+
