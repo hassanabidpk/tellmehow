@@ -1,4 +1,6 @@
-# Setup development version
+# TellMeHow Django backend
+
+[![Build Status](https://travis-ci.org/hassanabidpk/tellmehow.svg?branch=master)](https://travis-ci.org/hassanabidpk/tellmehow)
 
 ### Prerequisites
 
