@@ -11,7 +11,6 @@ class CategorySerialier(serializers.ModelSerializer):
         model = Category
 
 class MinorComponentSerializer(serializers.ModelSerializer):
-    category = serializers.StringRelatedField()
     material = serializers.StringRelatedField()
     recyclinginfomation = serializers.SerializerMethodField()
 
@@ -21,7 +20,7 @@ class MinorComponentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model =  MinorComponent
-        fields = ('id', 'name', 'category', 'material', 
+        fields = ('id', 'name', 'material', 
                     'recyclinginfomation')
 
 

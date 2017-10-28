@@ -45,10 +45,6 @@ class Material(models.Model):
 
 class MinorComponent(models.Model):
     name = models.CharField(max_length=250)
-    category = models.ForeignKey(Category,
-                            models.SET_NULL,
-                            blank=True,
-                            null=True,)
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
