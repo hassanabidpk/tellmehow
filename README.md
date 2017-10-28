@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/hassanabidpk/tellmehow.svg?branch=master)](https://travis-ci.org/hassanabidpk/tellmehow)
 
+<img src="recycleapp/static/recycleapp/img/splash.png">
+
 ### Prerequisites
 
 - Install Python 3.5 [download][https://www.python.org/downloads/]
