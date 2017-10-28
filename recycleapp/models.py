@@ -37,7 +37,6 @@ class Category(models.Model):
 class Material(models.Model):
     name = models.CharField(max_length=250)
     created_at = models.DateTimeField(auto_now=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     updated_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -46,12 +45,12 @@ class Material(models.Model):
 class Component(models.Model):
     name = models.CharField(max_length=250)
     type = models.CharField(max_length=100)
-    category = models.ForeignKey(Category, 
+    category = models.ForeignKey(Category,
                             models.SET_NULL,
                             blank=True,
                             null=True,)
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
-    main_component = models.ForeignKey('self', 
+    main_component = models.ForeignKey('self',
                             models.SET_NULL,
                             blank=True,
                             null=True,)
