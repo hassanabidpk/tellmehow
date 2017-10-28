@@ -61,7 +61,7 @@ class Component(models.Model):
         return self.name
 
 class Product(models.Model):
-    code = models.CharField(max_length=100)
+    code = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, allow_unicode=True)
     search_keywords = models.CharField(max_length=250)
